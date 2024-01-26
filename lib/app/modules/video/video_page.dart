@@ -51,9 +51,9 @@ class _VideoPageState extends State<VideoPage> {
               width: MediaQuery.of(context).size.width,
               child: Center(
                 child: videoStore.chewieController == null
-                    ? Column(
+                    ? const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           CircularProgressIndicator(),
                           SizedBox(height: 20),
                           Text('Loading'),
