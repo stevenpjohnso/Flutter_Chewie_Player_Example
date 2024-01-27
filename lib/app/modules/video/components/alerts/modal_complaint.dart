@@ -9,16 +9,15 @@ class ModalComplaint extends StatefulWidget {
 }
 
 class _ModalComplaintState extends State<ModalComplaint> {
-
   List<String> list = [
-    'Conteúdo sexual',
-    'Conteúdo violento',
-    'Conteúdo de incitação ao ódio ou abusivo',
-    'Assédio ou bullying',
-    'Atos perigosos ou nocivos',
-    'Spam ou enganoso',
-    'Viola meus direitos',
-    'Problemas com legendas',
+    'Sexual content',
+    'Violent content',
+    'Hate hateful or abusive content',
+    'Harassment or bullying',
+    'Dangerous or harmful acts',
+    'Spam or misleading',
+    'Violates my rights',
+    'Problems with subtitles',
   ];
 
   @override
@@ -31,13 +30,14 @@ class _ModalComplaintState extends State<ModalComplaint> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Denunciar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              const Text('Report',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               CloseButton(onPressed: () => Navigator.pop(context))
             ],
           ),
         ),
         const SizedBox(height: 20.0),
-        const Text('A seguir preencha as opções e confirme sua denuncia.'),
+        const Text('Fill in the options and confirm your report.'),
         const SizedBox(height: 20.0),
         DropdownOptionsComplaint(listOptions: list),
         const SizedBox(height: 20.0),
@@ -45,7 +45,9 @@ class _ModalComplaintState extends State<ModalComplaint> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             children: [
-              Expanded(child: CustomElevatedButton(title: 'Enviar', onTap: () => Navigator.pop(context))),
+              Expanded(
+                  child: CustomElevatedButton(
+                      title: 'Submit', onTap: () => Navigator.pop(context))),
             ],
           ),
         ),

@@ -9,7 +9,6 @@ part 'video_store.g.dart';
 class VideoStore = VideoStoreBase with _$VideoStore;
 
 abstract class VideoStoreBase with Store {
-
   @observable
   TargetPlatform? platform;
 
@@ -49,26 +48,33 @@ abstract class VideoStoreBase with Store {
 
   @action
   void createChewieController() {
-    if(videoPlayerController != null) {
+    if (videoPlayerController != null) {
       _isLoading = true;
       chewieController = ChewieController(
-        videoPlayerController: videoPlayerController!,
-        autoPlay: true,
-        useRootNavigator: false,
-        hideControlsTimer: const Duration(seconds: 3),
-        additionalOptions: (context) => [
-          OptionItem(onTap: () {}, iconData: Icons.closed_caption_outlined, title: 'Legendas'),
-          OptionItem(onTap: () => complaint(context: context), iconData: Icons.flag_outlined, title: 'Denunciar'),
-        ]
-      );
+          videoPlayerController: videoPlayerController!,
+          autoPlay: true,
+          useRootNavigator: false,
+          hideControlsTimer: const Duration(seconds: 3),
+          additionalOptions: (context) => [
+                OptionItem(
+                    onTap: () {},
+                    iconData: Icons.closed_caption_outlined,
+                    title: 'Captions'),
+                OptionItem(
+                    onTap: () => complaint(context: context),
+                    iconData: Icons.flag_outlined,
+                    title: 'Report'),
+              ]);
       _isLoading = false;
     }
   }
 
   @action
   Future<void> toggleVideo() async {
-    if(!videoPlayerController!.value.isPlaying && !videoPlayerController!.value.isBuffering) {
-      if(videoPlayerController?.value.position == videoPlayerController?.value.duration) {
+    if (!videoPlayerController!.value.isPlaying &&
+        !videoPlayerController!.value.isBuffering) {
+      if (videoPlayerController?.value.position ==
+          videoPlayerController?.value.duration) {
         chewieController?.exitFullScreen();
         currPlayIndex += 1;
         if (currPlayIndex > srcs.length - 1) {
@@ -96,11 +102,12 @@ abstract class VideoStoreBase with Store {
   @action
   Future<void> complaint({required BuildContext context}) async {
     showModalBottomSheet(
-      context: context,
-      useRootNavigator: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(12.0), topRight: Radius.circular(12.0))
-      ),
-      builder: (context) => const ModalComplaint());
+        context: context,
+        useRootNavigator: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12.0),
+                topRight: Radius.circular(12.0))),
+        builder: (context) => const ModalComplaint());
   }
 }

@@ -7,18 +7,16 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'export_video_files.dart';
 
 class VideoPage extends StatefulWidget {
-
   final String title;
 
-  const VideoPage({Key? key, this.title = 'Chewie Demo Player'}) : super(key: key);
+  const VideoPage({Key? key, this.title = 'Flutter Chewie Demo'})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _VideoPageState();
-
 }
 
 class _VideoPageState extends State<VideoPage> {
-
   final videoStore = Modular.get<VideoStore>();
 
   @override
@@ -37,50 +35,55 @@ class _VideoPageState extends State<VideoPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: widget.title,
-      home: Observer(builder: (context) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 3.54,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: videoStore.chewieController == null
-                    ? const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 20),
-                          Text('Loading'),
-                        ],
+        debugShowCheckedModeBanner: false,
+        title: widget.title,
+        home: Observer(
+            builder: (context) => Scaffold(
+                  appBar: AppBar(
+                    title: Text(widget.title),
+                  ),
+                  body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 3.54,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: videoStore.chewieController == null
+                              ? const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    SizedBox(height: 20),
+                                    Text('Loading'),
+                                  ],
+                                )
+                              : Chewie(
+                                  controller: videoStore.chewieController!),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 10.0),
+                        child: Text(
+                          'Videos',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 20),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: videoStore.srcs.length,
+                            itemBuilder: (context, index) => ComponentVideoTile(
+                                videoStore: videoStore, index: index)),
                       )
-                    : Chewie(controller: videoStore.chewieController!),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-              child: Text('Lista de Vídeos', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: videoStore.srcs.length,
-                  itemBuilder: (context, index) => ComponentVideoTile(videoStore: videoStore, index: index)
-              ),
-            )
-          ],
-        ),
-      ))
-    );
+                    ],
+                  ),
+                )));
   }
 
   Future<void> initializer() async {
     await videoStore.initializePlayer();
   }
-
 }
